@@ -1,13 +1,15 @@
-type BasicFormula = {
-    letter: 'P' | 'Q' | 'R' | 'S'
-    sub_index: number;
-}
-
+import {BasicFormula, JunctionFormula, NegationFormula} from '../Interfaces'
 class Formula{
-    formula: BasicFormula | [Formula, "&" | "|", Formula];
+    formula: BasicFormula | JunctionFormula | NegationFormula;
 
-    constructor(formula: BasicFormula | [Formula, "&" | "|", Formula]){
+    constructor(formula: BasicFormula | JunctionFormula | NegationFormula){
         this.formula = formula
+    }
+
+    negation (): Formula {
+        return new Formula(
+            ["¬", this]
+        )
     }
 
     conjunction (input_formula: Formula): Formula {
@@ -21,15 +23,25 @@ class Formula{
             [this, '|', input_formula]
         )
     }
-    
-    get get_formula () {
-        return this.formula
+
+    conditional (input_formula: Formula): Formula {
+        return new Formula(
+            [this, '->', input_formula]
+        )
     }
+    
+    get get_formula (): (any[] | object) {
+        if (!Array.isArray(this.formula)){
+             return this.formula
+        } else if (this.formula[0] === "¬") {
+            
+            return ["¬", this.formula[1].get_formula]
+        } else {
+            return [this.formula[0].get_formula, this.formula[1], this.formula[2].get_formula]
+        }
+    }
+
+    
 }
 
 export default Formula
-
-const f1 = new Formula({letter: 'P', sub_index: 1})
-const f2 = new Formula({letter: 'Q', sub_index: 1})
-const f3 = f1.conjunction(f2).conjunction(f1).disyunction(f2)
-console.log(f3.get_formula)

@@ -9,7 +9,4 @@ class Tableaux {
         this.left = left;
         this.formula = formula
     }
-    
-    
-
 }
