@@ -1,0 +1,2 @@
+# Logic Trainer Application
+### This application is meant to be a tool for learning and practicing formal logic. The aim is to make an interface to check and solve theorem resolution in A) a proof theory framework and B) a model theory framework. At first decidable classical logic is under the reach of the app. Further on, the motivation also goes onto making a theorem solver code for undecidable First-order-logic. Finally, the idea is to extend the same onto non-classical systems of logic such as modal and para-consistent logic. 
