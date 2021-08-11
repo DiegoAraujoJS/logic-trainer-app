@@ -1,12 +1,18 @@
 import Formula from './Formula'
 class Tableaux {
-    right: Tableaux;
-    left: Tableaux;
+    right: Tableaux | null = null
+    left: Tableaux | null = null
     formula: Formula;
     
-    constructor(right: Tableaux, left: Tableaux, formula: Formula) {
-        this.right = right;
-        this.left = left;
+    constructor(formula: Formula) {
         this.formula = formula
+    }
+
+    build (){
+        this.right = 
+    }
+
+    decompose(f: Formula) {
+        if (f.get_formula)
     }
 }

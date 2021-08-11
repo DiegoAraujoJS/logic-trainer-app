@@ -1,4 +1,5 @@
 import { BasicFormula, JunctionFormula, NegationFormula } from "../../Interfaces"
+import Formula from "../Formula"
 export function is_basic(f: BasicFormula | JunctionFormula | NegationFormula): f is BasicFormula {
     if (!Array.isArray(f)) return true
     else return false
@@ -12,4 +13,8 @@ export function all_are_basic (f: JunctionFormula | NegationFormula): boolean{
     })
     console.log(amap)
     return !amap.some(check => check === false)
+}
+
+export function is_theorem(f: Formula): boolean {
+    return false
 }

@@ -29,8 +29,8 @@ class Formula{
             [this, '->', input_formula]
         )
     }
-    
-    get get_formula (): (any[] | object) {
+
+    get get_formula (): BasicFormula | [string, object] | [object, string, object] {
         if (!Array.isArray(this.formula)){
              return this.formula
         } else if (this.formula[0] === "¬") {
