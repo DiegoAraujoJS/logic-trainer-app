@@ -58,3 +58,13 @@ function barking(pet: Dog | Fish) {
         pet.swim()
     }
 }
+
+interface Person {
+    pay: () => Person
+    walk: () => string
+}
+const p : Person = {
+    pay: () => p,
+    walk: () => 'adsf'
+}
+

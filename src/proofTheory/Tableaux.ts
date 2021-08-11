@@ -8,13 +8,4 @@ class Tableaux {
         this.formula = formula
     }
 
-    // build (){
-    //     this.right = 
-    // }
-
-    // decompose(f: Formula) {
-    //     if (f.get_formula)
-    // }
-
-    
 }
