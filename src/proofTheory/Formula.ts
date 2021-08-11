@@ -1,4 +1,4 @@
-import {BasicFormula, JunctionFormula, NegationFormula} from '../Interfaces'
+import {BasicFormula, ConjunctionFormula, JunctionFormula, NegationFormula} from '../Interfaces'
 class Formula{
     formula: BasicFormula | JunctionFormula | NegationFormula;
 
@@ -28,6 +28,10 @@ class Formula{
         return new Formula(
             [this, '->', input_formula]
         )
+    }
+
+    is_conjunction (f: Formula | ConjunctionFormula): f is ConjunctionFormula {
+        return (f as ConjunctionFormula)[1] === '&'
     }
 
     get get_formula (): BasicFormula | [string, object] | [object, string, object] {

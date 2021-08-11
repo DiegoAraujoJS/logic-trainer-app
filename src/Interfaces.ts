@@ -9,3 +9,5 @@ export type JunctionFormula = [Formula, "&" | "|" | "->", Formula]
 
 export type NegationFormula = ["¬", Formula]
 
+export type ConjunctionFormula =  [Formula, "&" , Formula]
+

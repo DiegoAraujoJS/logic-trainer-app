@@ -18,4 +18,4 @@ export const P = new Formula(p)
 export const Q = new Formula(q)
 export const F2 = F1.conditional(F1).conjunction(F1).negation()
 export const F3 = F1.conjunction(F1).conjunction(F1)
-
+if (F2.is_conjunction(F2)) F2
