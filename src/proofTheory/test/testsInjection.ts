@@ -1,21 +1,7 @@
-import { BasicFormula } from "../../Interfaces"
 import Formula from "../Formula"
-
-const f1: BasicFormula = {
-    letter: 'P',
-    sub_index: 1
-}
-const p: BasicFormula = {
-    letter: 'P',
-    sub_index: 1
-}
-const q: BasicFormula = {
-    letter: 'Q',
-    sub_index: 1
-}
-const F1 = new Formula(f1)
-export const P = new Formula(p)
-export const Q = new Formula(q)
-export const F2 = F1.conditional(F1).conjunction(F1).negation()
-export const F3 = F1.conjunction(F1).conjunction(F1)
-if (F2.is_conjunction(F2)) F2
+export const p = new Formula('P')
+export const q = new Formula('Q')
+export const not_p = p.negation()
+export const p_and_q = p.conjunction(q)
+export const p_and_q_basic = new Formula([new Formula('P'), '&', new Formula('Q')])
+export const p_and_q_and_p_and_q_basic = p_and_q.conjunction(p_and_q_basic)
