@@ -1,30 +1,17 @@
-import FormulaClass from './proofTheory/Formula'
+import Formula from './proofTheory/Formula'
 
-export interface BasicFormula {
-    letter: 'P' | 'Q' | 'R' | 'S'
-    sub_index: number;
+export interface IFormula<T extends FTypes> {
+    conjunction: (f: Formula<T>) => Formula<Conjunction>;
+    disyunction: (f: Formula<T>) => Formula<Disyunction>;
+    conditional: (f: Formula<T>) => Formula<Conditional>;
+    negation: () => Formula<Negation>;
+    formula: T
 }
 
-export type JunctionFormula = [FormulaClass, "&" | "|" | "->", FormulaClass]
+export type FTypes = Conjunction | Disyunction | Conditional | Negation
+export type Conjunction = [Formula<FTypes>, '&', Formula<FTypes>] 
+export type Disyunction = [Formula<FTypes>, 'v', Formula<FTypes>]
+export type Conditional = [Formula<FTypes>, '->', Formula<FTypes>]
+export type Negation = ['¬', Formula<FTypes>]
 
-export type NegationFormula = ["¬", FormulaClass]
-
-export type ConjunctionFormula =  [FormulaClass, "&" , FormulaClass]
-
-
-
-interface Formula {
-    // negation: (ƒ: Formula) => Negation
-    conjunction(ƒ: Basic | Conjunction): Conjunction
-    // disyunction: (ƒ: Formula) => Disyunction
-    // conditional: (ƒ: Formula) => Conditional
-}
-
-interface Basic extends Formula {
-    constituents: {letter: 'P' | 'Q'}
-}
-
-interface Conjunction extends Formula {
-    constituents: [Basic | Conjunction, '&', Basic | Conjunction]
-}
 

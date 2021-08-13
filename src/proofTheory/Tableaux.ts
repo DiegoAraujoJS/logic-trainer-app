@@ -1,5 +1,5 @@
 import Formula from './Formula'
-class Tableaux {
+class Tableaux<T> {
     right: Tableaux | null = null
     left: Tableaux | null = null
     formula: Formula;

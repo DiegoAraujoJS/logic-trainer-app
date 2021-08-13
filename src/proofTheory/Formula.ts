@@ -1,51 +1,26 @@
-import {BasicFormula, ConjunctionFormula, JunctionFormula, NegationFormula} from '../Interfaces'
-class Formula{
-    formula: BasicFormula | JunctionFormula | NegationFormula;
-
-    constructor(formula: BasicFormula | JunctionFormula | NegationFormula){
-        this.formula = formula
-    }
-
-    negation (): Formula {
-        return new Formula(
-            ["¬", this]
-        )
-    }
-
-    conjunction (input_formula: Formula): Formula {
-        return new Formula (
-            [this, '&', input_formula]
-        )
-    }
-
-    disyunction (input_formula: Formula): Formula {
-        return new Formula (
-            [this, '|', input_formula]
-        )
-    }
-
-    conditional (input_formula: Formula): Formula {
-        return new Formula(
-            [this, '->', input_formula]
-        )
-    }
-
-    is_conjunction (f: Formula | ConjunctionFormula): f is ConjunctionFormula {
-        return (f as ConjunctionFormula)[1] === '&'
-    }
-
-    get get_formula (): BasicFormula | [string, object] | [object, string, object] {
-        if (!Array.isArray(this.formula)){
-             return this.formula
-        } else if (this.formula[0] === "¬") {
-            
-            return ["¬", this.formula[1].get_formula]
-        } else {
-            return [this.formula[0].get_formula, this.formula[1], this.formula[2].get_formula]
-        }
-    }
-
+import {FTypes, IFormula, Conjunction, Disyunction, Conditional, Negation} from '../Interfaces'
+class Formula<T extends FTypes> implements IFormula<T>{
+    formula: T;
     
+    constructor(f: T) {
+        this.formula = f
+    }
+
+    conjunction(f: Formula<T>): Formula<Conjunction> {
+        return new Formula<Conjunction> ([this, '&', f])
+    }
+
+    disyunction(f: Formula<T>): Formula<Disyunction> {
+        return new Formula<Disyunction> ([this, 'v', f])
+    }
+
+    conditional(f: Formula<T>): Formula<Conditional> {
+        return new Formula<Conditional> ([this, '->', f])
+    }
+
+    negation (): Formula<Negation> {
+        return new Formula<Negation> (['¬', this])
+    }
 }
 
 export default Formula
