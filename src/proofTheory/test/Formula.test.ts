@@ -1,7 +1,7 @@
 import Formula from "../Formula";
 import * as sample from './testsInjection'
 describe('formula properties and methods tests', ()=>{
-    it('it should generate constituents', ()=>{
+    it('should generate constituents', ()=>{
         const p = sample.p_and_q.inmediate_constituents![0]
         const p2 = sample.p_and_q_basic.inmediate_constituents![0]
         const p_and_q_and_p_and_q_basic = sample.p_and_q_and_p_and_q_basic
@@ -15,4 +15,5 @@ describe('formula properties and methods tests', ()=>{
         expect(p_and_q_and_p_and_q_basic.inmediate_constituents![1]).toBe(sample.p_and_q_basic)
         
     })
+    it ('should ')
 })

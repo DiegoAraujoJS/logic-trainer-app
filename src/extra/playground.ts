@@ -1,5 +1,8 @@
 // Type Predicates
 
+import { Basic, Conjunction } from "../Interfaces"
+import Formula from "../proofTheory/Formula"
+
 interface Fish {
     swim: () => void
     kind: 'fish'
@@ -59,12 +62,36 @@ function barking(pet: Dog | Fish) {
     }
 }
 
-interface Person {
-    pay: () => Person
-    walk: () => string
+
+// ------------------------------------------o---------------------------------------------------
+
+function indentity<T>(arg: T): T {
+    return arg
 }
-const p : Person = {
-    pay: () => p,
-    walk: () => 'adsf'
+
+interface IForm<T> {
+    value: T
+    get_value: <T>(arg: T) => T
 }
+type Conj = IForm<string> & IForm<string[]>
+
+
+type FTypes = string | number
+
+class Form<T extends FTypes> implements IForm<T> {
+    value: T;
+    get_value: <T>(arg:T) => T
+
+    constructor(value: T) {
+        this.value = value
+        this.get_value = <T>(arg:T) => arg
+    }
+
+    is_number(): this is Form<number> {
+        return typeof this.value === 'number'
+    }
+    
+}
+let table = new Form<string>('table')
+
 
