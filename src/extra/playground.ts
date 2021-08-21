@@ -69,29 +69,55 @@ function indentity<T>(arg: T): T {
     return arg
 }
 
-interface IForm<T> {
-    value: T
-    get_value: <T>(arg: T) => T
+type CondType<T> = T extends string ? string : number
+
+interface IForm<T extends string | number> {
+    value: CondType<T>
+    kind: T extends string ? 'string' : 'number';
+    get_value(arg:T): T
 }
-type Conj = IForm<string> & IForm<string[]>
+
+let num = 4
+
+function form <T extends string | number>(arg: T): CondType<T> {
+    throw 'un'
+}
+let ff = form('3')
+
+
+type Flatten<T> = T extends any[] ? T[number] : T
+
+let arr: Flatten<number>
+let arr2: Flatten<Form<string>>
 
 
 type FTypes = string | number
 
-class Form<T extends FTypes> implements IForm<T> {
-    value: T;
+class Form<T extends string | number> implements IForm<T> {
+    value: CondType<T>;
+    kind: T extends string ? 'string' : 'number';
+    
     get_value: <T>(arg:T) => T
 
-    constructor(value: T) {
+    constructor(value: CondType<T>, kind: T extends string ? 'string' : 'number') {
         this.value = value
         this.get_value = <T>(arg:T) => arg
+        this.kind = kind
+        
     }
 
     is_number(): this is Form<number> {
-        return typeof this.value === 'number'
+        return this.kind === 'number'
+    }
+
+    some_function() {
+        if (this.kind === 'number') {
+            this.kind
+        }
     }
     
 }
-let table = new Form<string>('table')
+let table = new Form<number>(4, 'number')
 
+table.kind
 
