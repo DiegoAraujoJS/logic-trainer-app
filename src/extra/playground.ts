@@ -121,3 +121,6 @@ let table = new Form<number>(4, 'number')
 
 table.kind
 
+
+const array = [1, 2, 3, 4, 5]
+
