@@ -1,5 +1,6 @@
 import Formula from './Formula'
-import { Basic, Conjunction, FTypes, ITableaux } from '../Interfaces'
+import { Basic, Conditional, Conjunction, Disyunction, FTypes, ITableaux, Negation } from '../Interfaces'
+import getArrayDepth from '../utils/getArrayDepth'
 
 export default class Tableaux<T extends FTypes> implements ITableaux<T>{
     formula: Formula<T>
@@ -8,125 +9,50 @@ export default class Tableaux<T extends FTypes> implements ITableaux<T>{
 
     constructor(f: Formula<T>, private r?: Tableaux<FTypes>) {
         this.formula = f
-
-        this.right = r || null
+        this.right = null
         this.left = null
     }
 
-    private generate_tableaux(): Tableaux<T> {
-        
-        if (this.formula.is_negation(this.formula.formula)) {
-        }
-        return new Tableaux<T>(this.formula)
-    }
-
-}
-
-function get_branches (tableaux: Tableaux<FTypes>): any{
-    let result = []
-    if (tableaux.right && tableaux.left) {
-        result.push([tableaux.formula, ...get_branches(tableaux.left)], [tableaux.formula, ...get_branches(tableaux.right)])
-    } else if (tableaux.right) {
-        result.push( [tableaux.formula, ...get_branches(tableaux.right)])
-    } else if (tableaux.left) {
-        result.push( [tableaux.formula, ...get_branches(tableaux.left)])
-    } else {
-        return [tableaux.formula]
-    }
-    
-    return result
-}
-
-const T = new Tableaux(new Formula<Basic>('P'))
-T.right = new Tableaux(new Formula<Basic>('Q'))
-T.left = new Tableaux(new Formula<Basic>('R'))
-T.right.right = new Tableaux(new Formula<Basic>('S'))
-T.left.left = new Tableaux(new Formula<Basic>('T'))
-T.left.right =  new Tableaux(new Formula<Basic>('S'))
-
-let branches = get_branches(T)
-
-// console.log(branches[0].map((x: any) => Array.isArray(x) ? [branches[0][0], x].reduce((previous, current: any) => {
-//     console.log(previous, current); 
-//     if (Array.isArray(current)) {
-//         if (Array.isArray(previous)){
-//             return [...previous, ...current]
-//         } else {
-//             return [previous, ...current]
-//         }
-//     } else {
-//         if (Array.isArray(previous)){
-//             return [...previous, current]
-//         } else {
-//             return [previous, current]
-//         }
-//     }
-// }, []) : false).filter((x: any) => x))
-
-function transformation(array: any[] ){
-    let newArray: any[] = []
-    if (array[0] === 1 && Array.isArray(array[1]) && Array.isArray(array[2])){
-        newArray = array.map(x => Array.isArray(x) ? [branches[0], x].reduce((previous, current: any) => {
-            
-            if (Array.isArray(current)) {
-                if (Array.isArray(previous)){
-                    return [...previous, ...current]
-                } else {
-                    return [previous, ...current]
-                }
-            } else {
-                if (Array.isArray(previous)){
-                    return [...previous, current]
-                } else {
-                    return [previous, current]
-                }
-            }
-        }, []) : false).filter(x => x)
-        return newArray
-    } else {
-        return array
-    }
-}
-
-function traverseArrays(array: any[]) {
-    
-    let acum: any[] = [transformation(array)]
-    console.log(transformation(array))
-    let check = false
-    for (const x of array) {
-        if (Array.isArray(x)) {
-            
-            acum = [...acum, ...traverseArrays(x)]
-            console.log('continue', acum)
-        } else {
-            check = true
-            console.log(`here goes cb when some x ${x} was not array` )
+    get_branches_execution(tree: Tableaux<FTypes>, branches: any[], trace: null | Formula<FTypes>[] = null): void {
+        trace = Array.isArray(trace) ? [...trace, tree.formula] : [tree.formula]
+        const this_branches_l = tree.left ? this.get_branches_execution(tree.left, branches, trace) : []
+        const this_branches_r = tree.right ? this.get_branches_execution(tree.right,  branches, trace) : []
+        if (! (tree.left || tree.right)) {
+            branches.push(trace)
         }
     }
     
-    return acum
+    get get_branches(): Formula<FTypes>[] {
+        let branches: Formula<FTypes>[] = []
+        this.get_branches_execution(this, branches)
+        return branches
+    }
+
 }
 
-let array = [1, [2, 3], [2, 4]]
 
-console.log(traverseArrays(array))
 
-// console.log(array.map(x => Array.isArray(x) ? [1, x].reduce((previous, current: any) => {
-//     console.log(previous, current); 
-//     if (Array.isArray(current)) {
-//         if (Array.isArray(previous)){
-//             return [...previous, ...current]
-//         } else {
-//             return [previous, ...current]
-//         }
-//     } else {
-//         if (Array.isArray(previous)){
-//             return [...previous, current]
-//         } else {
-//             return [previous, current]
-//         }
-//     }
-// }, []) : false).filter(x => x))
+// const T = new Tableaux(new Formula<Basic>('P'))
+// T.right = new Tableaux(new Formula<Basic>('Q'))
+// T.left = new Tableaux(new Formula<Basic>('R'))
+// T.right.right = new Tableaux(new Formula<Basic>('S'))
+// T.left.left = new Tableaux(new Formula<Basic>('T'))
+// T.left.right =  new Tableaux(new Formula<Basic>('S'))
+
+const P = new Formula<Basic>('P')
+const Q = new Formula<Basic>('Q')
+const P_or_Q = P.disyunction(Q)
+const T = new Tableaux(P_or_Q)
+T.right = new Tableaux(P)
+T.right.right = new Tableaux( new Formula('P'))
+T.right.left = new Tableaux(new Formula('P').conjunction(new Formula('Q')))
+T.left = new Tableaux(Q)
+
+console.log(T.get_branches)
+/// [ [], 1] --> 2
+
+let array = [1, [[2]], [1]]
+
 
     //     P
     //    /\

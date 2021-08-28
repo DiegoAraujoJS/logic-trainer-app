@@ -2,125 +2,35 @@
 
 import { Basic, Conjunction } from "../Interfaces"
 import Formula from "../proofTheory/Formula"
+console.log('asdfadsfadf')
 
-interface Fish {
-    swim: () => void
-    kind: 'fish'
-}
-interface Dog {
-    bark: () => void
-    kind: 'dog'
-}
-
-const f: Fish = {
-    swim: () => console.log('blblblbl'),
-    kind: 'fish'
-}
-
-const d: Dog = {
-    bark: () => console.log('waf waf'),
-    kind: 'dog'
-}
-
-function checker (pet: Fish | Dog) {
-    pet = d
-    if ('swim' in pet) {
-        let check: never = pet
-        pet = d
-        pet
-    }
-}
-
-function type_guard(pet: Fish | Dog): pet is Dog {
-    return (pet as Dog).bark !== undefined
-}
-
-function bark_if_dog(){
-    
-    let pet: Fish | Dog | undefined; 
-    
-    if (Math.random() < 0.5){
-        pet = {
-            bark: () => console.log('wuf'),
-            kind: 'dog'
-        }
-    } else {
-        pet = {
-            swim: () => console.log('blblblbl'),
-            kind: 'fish'
-        }
-    }
-    const pets: (Dog | Fish)[] = [f, d]
-    const filtered: Dog[] = pets.filter(type_guard)
-}
-
-function barking(pet: Dog | Fish) {
-    if (type_guard(pet)) {
-        pet.bark()
-    } else{
-        pet.swim()
-    }
-}
-
-
-// ------------------------------------------o---------------------------------------------------
-
-function indentity<T>(arg: T): T {
-    return arg
-}
-
-type CondType<T> = T extends string ? string : number
-
-interface IForm<T extends string | number> {
-    value: CondType<T>
-    kind: T extends string ? 'string' : 'number';
-    get_value(arg:T): T
-}
-
-let num = 4
-
-function form <T extends string | number>(arg: T): CondType<T> {
-    throw 'un'
-}
-let ff = form('3')
-
-
-type Flatten<T> = T extends any[] ? T[number] : T
-
-let arr: Flatten<number>
-let arr2: Flatten<Form<string>>
-
-
-type FTypes = string | number
-
-class Form<T extends string | number> implements IForm<T> {
-    value: CondType<T>;
-    kind: T extends string ? 'string' : 'number';
-    
-    get_value: <T>(arg:T) => T
-
-    constructor(value: CondType<T>, kind: T extends string ? 'string' : 'number') {
+class BinaryTree{
+    value: number
+    right: BinaryTree | null = null 
+    left: BinaryTree | null = null
+    constructor(value: any) {
         this.value = value
-        this.get_value = <T>(arg:T) => arg
-        this.kind = kind
-        
     }
-
-    is_number(): this is Form<number> {
-        return this.kind === 'number'
-    }
-
-    some_function() {
-        if (this.kind === 'number') {
-            this.kind
-        }
-    }
-    
 }
-let table = new Form<number>(4, 'number')
 
-table.kind
+function get_branches_execution(tree: BinaryTree, branches: any[], trace: null | number[] = null): void {
+    trace = Array.isArray(trace) ? [...trace, tree.value] : [tree.value]
+    const this_branches_l = tree.left ? get_branches_execution(tree.left, branches, trace) : []
+    const this_branches_r = tree.right ? get_branches_execution(tree.right,  branches, trace) : []
+    if (! (tree.left || tree.right)) {
+        branches.push(trace)
+    }
+}
 
+function get_branches(tree: BinaryTree) {
+    let branches: any[] = []
+    get_branches_execution(tree, branches)
+    return branches
+}
 
-const array = [1, 2, 3, 4, 5]
-
+const T = new BinaryTree(1)
+T.right = new BinaryTree(2)
+T.right.right = new BinaryTree(7)
+T.right.left = new BinaryTree(6)
+T.left = new BinaryTree(3)
+console.log('asdf', get_branches(T))
