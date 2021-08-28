@@ -15,5 +15,5 @@ describe('formula properties and methods tests', ()=>{
         expect(p_and_q_and_p_and_q_basic.inmediate_constituents![1]).toBe(sample.p_and_q_basic)
         
     })
-    it ('should ')
+    
 })
