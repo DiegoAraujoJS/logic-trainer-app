@@ -1,5 +1,5 @@
 import Formula from "../Formula";
-import * as sample from './testsInjection'
+import { formula_tests as sample} from "./testsInjection"
 describe('formula properties and methods tests', ()=>{
     it('should generate constituents', ()=>{
         const p = sample.p_and_q.inmediate_constituents![0]
@@ -17,3 +17,4 @@ describe('formula properties and methods tests', ()=>{
     })
     
 })
+

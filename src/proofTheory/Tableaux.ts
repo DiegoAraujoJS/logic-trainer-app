@@ -44,7 +44,7 @@ export default class Tableaux<T extends FTypes> implements ITableaux<T>{
         while (negation_branch){
             
             const negation = negation_branch.find(formula => formula.is_negation(formula.formula))
-            console.log(negation)
+            
             const contradiction = negation_branch.find(formula => formula == negation?.left)
             if (contradiction){
                 check = true
@@ -76,32 +76,6 @@ export default class Tableaux<T extends FTypes> implements ITableaux<T>{
 }
 
 
-
-// const T = new Tableaux(new Formula<Basic>('P'))
-// T.right = new Tableaux(new Formula<Basic>('Q'))
-// T.left = new Tableaux(new Formula<Basic>('R'))
-// T.right.right = new Tableaux(new Formula<Basic>('S'))
-// T.left.left = new Tableaux(new Formula<Basic>('T'))
-// T.left.right =  new Tableaux(new Formula<Basic>('S'))
-
-const P = new Formula<Basic>('P', "Atomic")
-const not_P = P.negation()
-const Q = new Formula<Basic>('Q', "Atomic")
-const R = new Formula<Basic> ('R', "Atomic")
-const not_Q = Q.negation()
-const P_or_Q = P.disyunction(Q)
-const T = new Tableaux(P.conjunction(R).conjunction(Q).conjunction(not_Q))
-console.log(T.get_branches)
-console.log(T.isClosed)
-
-/// [ [], 1] --> 2
-
-//      P & (P v Q)
-//      P
-//      (P v Q)
-//          /\
-//         /  \
-//        P    Q
 
 let array = [1, [[2]], [1]]
 
