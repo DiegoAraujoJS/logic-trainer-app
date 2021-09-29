@@ -1,4 +1,4 @@
-import {FTypes, IFormula, Conjunction, Disyunction, Conditional, Negation, InmediateConstituents, Basic} from '../Interfaces'
+import {FTypes, IFormula, Conjunction, Disyunction, Conditional, Negation, InmediateConstituents} from '../Interfaces'
 
 export default class Formula<T extends FTypes> implements IFormula<T>{
     formula: T;
